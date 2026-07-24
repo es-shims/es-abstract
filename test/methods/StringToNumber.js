@@ -76,4 +76,24 @@ module.exports = function (t, year, StringToNumber) {
 
 		st.end();
 	});
+
+	t.test('pathalogical input', function (st) {
+		var manySpaces = new Array(100001).join(' ');
+		var input = manySpaces + '1' + manySpaces + '0' + manySpaces;
+
+		var start = Date.now();
+		var result = StringToNumber(input);
+		var elapsed = Date.now() - start;
+
+		st.equal(result, NaN, 'internal whitespace makes it not a number');
+		st.ok(elapsed < 250, 'completes in linear time (took ' + elapsed + 'ms)');
+
+		st.end();
+	});
+
+	t.test('empty string', function (st) {
+		var result = StringToNumber('');
+		st.equal(result, 0, 'the empty string gives the number 0');
+		st.end();
+	});
 };
